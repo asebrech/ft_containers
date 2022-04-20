@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 13:00:22 by asebrech          #+#    #+#             */
-/*   Updated: 2022/04/20 11:17:23 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/04/20 15:58:15 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 #include <string>
 
 
-#include <type_traits>
+#include <iterator>     // std::iterator_traits
+#include <typeinfo>     // typeid
+#include "iterator_traits.hpp"
 
 int	main()
 {
@@ -35,4 +37,16 @@ int	main()
 
 	std::cout << vector.max_size() << std::endl;
 	std::cout << ft_vector.max_size() << std::endl;
+
+	typedef std::iterator_traits<int*> traits;
+
+	if (typeid(traits::iterator_category)==typeid(std::random_access_iterator_tag))
+		std::cout << "int* is a random-access iterator" << std::endl;
+		std::cout << typeid(traits).name() << std::endl;
+
+	typedef ft::iterator_traits<int*> traits1;
+	if (typeid(traits1::iterator_category)==typeid(ft::random_access_iterator_tag))
+		std::cout << "int* is a random-access iterator" << std::endl;
+		std::cout << typeid(traits1).name() << std::endl;
+	return 0;	
 }

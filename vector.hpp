@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/04/18 17:40:51 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/04/20 11:46:42 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,13 @@
 
 # include <memory>
 # include <stdexcept>
-# include <iterator>
+//# include <iterator>
 
+# include "type_traits.hpp"
 # include <iostream>
 
 namespace	ft
 {
-
-	template<bool Condition, typename T = void>
-	struct	enable_if {};
-
-	template<typename T>
-	struct	enable_if<true, T>
-	{
-		typedef T	type;
-	};
-
-
 	template < class T, class Alloc = std::allocator<T> >
 	class	vector
 	{
@@ -39,9 +29,12 @@ namespace	ft
 
 			typedef T	value_type;
 			typedef Alloc	allocator_type;
-			typedef typename allocator_type::size_type	size_type;
+			typedef typename allocator_type::reference	reference;
+			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;
+			typedef typename std::iterator<std::random_access_iterator_tag, value_type>	iterator;
+			typedef typename allocator_type::size_type	size_type;
 
 			explicit vector(const allocator_type & alloc = allocator_type()) : _alloc(alloc) {};
 			
@@ -59,7 +52,7 @@ namespace	ft
 			
 			template <class	InputIterator > 
 			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(),
-				typename ft::enable_if<!std::is_integral<InputIterator>::value, std::nullptr_t>::type = nullptr) : _alloc(alloc)
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, std::nullptr_t>::type = nullptr) : _alloc(alloc)
 			{
 				this->_capacity = std::distance(first, last);
 				this->_size = this->_capacity;

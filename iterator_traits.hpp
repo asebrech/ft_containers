@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 14:39:08 by asebrech          #+#    #+#             */
-/*   Updated: 2022/04/20 15:50:48 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/04/20 18:09:30 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ namespace	ft
 
 	struct input_iterator_tag {};
 	struct output_iterator_tag {};
-	struct forward_iterator_tag    : public input_iterator_tag {};
-	struct bidirectional_iterator_tag    : public forward_iterator_tag {};
-	struct random_access_iterator_tag    : public bidirectional_iterator_tag {};
+	struct forward_iterator_tag : public input_iterator_tag {};
+	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 
 	/* Traits class defining properties of iterators. */

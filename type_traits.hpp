@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 09:55:25 by asebrech          #+#    #+#             */
-/*   Updated: 2022/04/20 11:46:23 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/04/21 09:10:13 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,7 @@ namespace	ft
 	struct	enable_if {};
 
 	template <typename T>
-	struct	enable_if<true, T>
-	{
-		typedef T	type;
-	};
+	struct	enable_if<true, T> { typedef T	type; };
 };
 
 #endif

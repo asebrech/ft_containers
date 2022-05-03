@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/04/20 15:45:11 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/03 10:38:02 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 //# include <iterator>
 
 # include "type_traits.hpp"
+# include "random_access_iterator.hpp"
 
 # include <iostream>
 
@@ -34,7 +35,8 @@ namespace	ft
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;
-			typedef typename std::iterator<std::random_access_iterator_tag, value_type>	iterator;
+			typedef	random_access_iterator<value_type>	iterator;
+			typedef	random_access_iterator<const value_type>	const_iterator;
 			typedef typename allocator_type::size_type	size_type;
 
 			explicit vector(const allocator_type & alloc = allocator_type()) : _alloc(alloc) {};

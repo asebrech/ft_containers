@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/05/03 10:38:02 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/10 10:42:16 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 
 # include <memory>
 # include <stdexcept>
-//# include <iterator>
 
 # include "type_traits.hpp"
 # include "random_access_iterator.hpp"
+# include "reverse_iterator.hpp"
 
 # include <iostream>
 
@@ -37,6 +37,8 @@ namespace	ft
 			typedef typename allocator_type::const_pointer	const_pointer;
 			typedef	random_access_iterator<value_type>	iterator;
 			typedef	random_access_iterator<const value_type>	const_iterator;
+			typedef	ft::reverse_iterator<iterator>	reverse_iterator;
+			typedef	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef typename allocator_type::size_type	size_type;
 
 			explicit vector(const allocator_type & alloc = allocator_type()) : _alloc(alloc) {};

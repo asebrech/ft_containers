@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 13:00:22 by asebrech          #+#    #+#             */
-/*   Updated: 2022/05/03 12:21:10 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/10 11:09:29 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <typeinfo>     // typeid
 #include "iterator_traits.hpp"
 #include "random_access_iterator.hpp"
+#include "reverse_iterator.hpp"
 
 int	main()
 {
@@ -39,16 +40,18 @@ int	main()
 	std::cout << vector.max_size() << std::endl;
 	std::cout << ft_vector.max_size() << std::endl;
 
-	std::vector<int>::iterator	it = vector.begin();
-	std::vector<int>::iterator	ite = vector.end();
+	std::vector<int>::reverse_iterator	it(vector.begin());
+	std::vector<int>::reverse_iterator	ite = vector.rend();
 
-	it++;
-	1 + it;
-	int i = it - ite;
-	std::cout<< "i " << i << std::endl;
+	if(it >= ite)
+		std::cout << "okay \n";
 
+	ite - it;
+
+	if (it.base() == vector.begin())
+		std::cout << "okay " << it[-5] << std::endl;
 	std::cout<< "vec " << *it << std::endl;
-
+	std::cout<< "vec " << *(vector.begin() - 1) << std::endl;
 
 	typedef std::iterator_traits<int*> traits;
 
@@ -67,10 +70,21 @@ int	main()
 	ft::vector<int>::iterator	toto(tata);
 	ft::vector<int>::iterator	halo(toto);
 
+	ft::vector<int>::reverse_iterator	test(tata);
+	ft::vector<int>::reverse_iterator	test2(toto);
 
+	if(test == test)
+		std::cout << "okay \n";
+	test2 - test;
+
+	if (test.base() == tata)
+		std::cout << "ttttetttstst :    "  << *test  << std::endl;;
+
+	halo = 1 + halo;
+	toto - halo;
 	std::cout << &(*toto) << std::endl;
 	std::cout << tata << std::endl;
-	std::cout << halo[1] << std::endl;
+	std::cout << *halo << std::endl;
 
 	return 0;	
 }

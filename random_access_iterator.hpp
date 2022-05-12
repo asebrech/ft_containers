@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 12:13:41 by asebrech          #+#    #+#             */
-/*   Updated: 2022/05/10 11:12:55 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/12 10:28:24 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ namespace	ft
 
 			/* Lifecyle */
 
-			random_access_iterator(void) : _ptr(nullptr) {}
+			random_access_iterator(void) : _ptr(NULL) {}
 			random_access_iterator(pointer ptr) : _ptr(ptr) {}
 			random_access_iterator(iterator const & src) { *this = src; }
 			virtual ~random_access_iterator() {}
@@ -83,7 +83,7 @@ namespace	ft
 	};
 
 	template <class T>
-	random_access_iterator<T>	operator+(random_access_iterator<T>::difference_type lhs, random_access_iterator<T> const & rhs) {return (random_access_iterator<T>(lhs + &(*rhs)));}
+	random_access_iterator<T>	operator+(typename random_access_iterator<T>::difference_type lhs, random_access_iterator<T> const & rhs) {return (random_access_iterator<T>(lhs + &(*rhs)));}
 };
 
 #endif

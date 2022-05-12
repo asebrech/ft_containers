@@ -6,12 +6,14 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/20 14:39:08 by asebrech          #+#    #+#             */
-/*   Updated: 2022/04/20 18:09:30 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/12 10:24:14 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_TRAITS_HPP
 # define ITERATOR_TRAITS_HPP
+
+# include <stddef.h>
 
 namespace	ft
 {

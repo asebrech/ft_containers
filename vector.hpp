@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/05/12 19:13:31 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/13 12:16:28 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@
 # include <memory>
 # include <stdexcept>
 # include <limits>
+# include <sstream>
 
 # include "type_traits.hpp"
 # include "random_access_iterator.hpp"
 # include "reverse_iterator.hpp"
+# include "utile.hpp"
 
 # include <iostream>
 
@@ -43,6 +45,15 @@ namespace	ft
 			typedef	ft::reverse_iterator<iterator>	reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef typename allocator_type::size_type	size_type;
+
+		private :
+
+			pointer	_data;
+			allocator_type	_alloc;
+			size_type	_capacity;
+			size_type	_size;
+
+		public :
 
 			/*	Member functions	*/
 
@@ -103,8 +114,27 @@ namespace	ft
 
 			/*	Elements access		*/
 
-			pointer	data(void) { return (this->_data); }
-			const_pointer	data(void) const { return (static_cast<const_pointer>(this->_data)); }
+			reference	operator[](size_type n) { return(_data[n]); }
+			const_reference	operator[](size_type n) const { return(_data[n]); }
+
+			reference	at(size_type n)
+			{
+				if (n >= _size)
+					_out_of_range(n);
+				return(_data[n]);
+			}
+			const_reference	at(size_type n) const
+			{
+				if (n >= _size)
+					_out_of_range(n);
+				return(_data[n]);
+			}
+
+			reference	front() { return(_data); }
+			const_reference	front() const { return(_data); }
+
+			reference	back() { return(_data[_size - 1]); }
+			const_reference	back() const { return(_data[_size - 1]); }
 
 			/*	Modifiers	*/
 
@@ -116,17 +146,9 @@ namespace	ft
 				for (InputIterator it = first; it != last; it++)
 					_size++;
 				if (_size > _capacity)
-				{
-					_alloc.deallocate(_data, _capacity);
-					_capacity = _size;
-					if (_capacity > max_size())
-						throw	std::length_error("vector");
-					_data = _alloc.allocate(_capacity);
-				}
+					_new_allocate();
 				for (size_type i = 0; i < _size; i++)
-				{
 					_alloc.construct((_data + i), *first++);
-				}
 			}
 			// fill
 			void	assign(size_type n, value_type const & val)
@@ -134,17 +156,9 @@ namespace	ft
 				clear();
 				_size = n;
 				if (_size > _capacity)
-				{
-					_alloc.deallocate(_data, _capacity);
-					_capacity = _size;
-					if (_capacity > max_size())
-						throw	std::length_error("vector");
-					_data = _alloc.allocate(_capacity);
-				}
+					_new_allocate();
 				for (size_type i = 0; i < _size; i++)
-				{
 					_alloc.construct((_data + i), val);
-				}	
 			}
 
 			void	swap(vector & x)
@@ -157,19 +171,32 @@ namespace	ft
 			void	clear()
 			{
 				for (size_type i = 0; i < _size; i++)
-				{
 					_alloc.destroy(_data + i);
-				}
 				_size = 0;
 			}
 
 		private :
+						
+			/*	utiles functions	*/
 
-			pointer	_data;
-			allocator_type	_alloc;
-			size_type	_capacity;
-			size_type	_size;
+			void	_out_of_range(size_type n)
+			{
+				std::string	error(" vector::_M_range_check: __n (which is ");
+				error.append(ft::to_string(n));
+				error.append(") >= this->size() (which is ");
+				error.append(ft::to_string(_size));
+				error.push_back(')');
+				throw	std::out_of_range(error);
+			}
 
+			void	_new_allocate()
+			{
+				_alloc.deallocate(_data, _capacity);
+				_capacity = _size;
+				if (_capacity > max_size())
+					throw	std::length_error("vector");
+				_data = _alloc.allocate(_capacity);
+			}
 	};
 };
 

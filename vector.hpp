@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/05/13 12:16:28 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/16 11:03:17 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,8 @@ namespace	ft
 
 			// range
 			template <class InputIterator>			
-			void	assign(InputIterator first, InputIterator last)
+			void	assign(InputIterator first, InputIterator last,
+					typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = false)
 			{
 				clear();
 				for (InputIterator it = first; it != last; it++)
@@ -159,6 +160,63 @@ namespace	ft
 					_new_allocate();
 				for (size_type i = 0; i < _size; i++)
 					_alloc.construct((_data + i), val);
+			}
+
+			void	push_back(value_type const & val) { insert(end(), val); } 
+			
+			// single element
+			iterator	insert(iterator position, value_type const & val)
+			{
+				size_type i = 0;
+				size_type rtn = 0;
+				if(_size + 1 > _capacity)
+				{
+					_size++;
+					if (_size > max_size())
+						throw	std::length_error("vector");
+					pointer	tmp = _alloc.allocate(_size); 
+					iterator	it = begin();
+					while(it != position)
+					{
+						tmp[i] = *it;
+						i++;
+						it++;
+					}
+					rtn = i;
+					tmp[i] = val;
+					i++;
+					while(it != end())
+					{
+						tmp[i] = *it;
+						i++;
+						it++;
+					}
+					clear();
+					_alloc.deallocate(_data, _capacity);
+					_capacity++;
+					_size = _capacity;
+					_data = tmp;
+				}
+				else
+				{
+					for (iterator it = begin(); it != position; it++)
+						i++;
+					value_type	tmp = _data[i];
+					value_type	tmp2;
+					_data[i] = val;
+					rtn = i;
+					i++;
+					while(i < _size)
+					{
+						tmp2 = _data[i];
+						_data[i] = tmp;
+						tmp = tmp2;
+						i++;
+					}
+					_data[i] = tmp;
+					_size++;
+				}
+				return (begin() + rtn);
 			}
 
 			void	swap(vector & x)

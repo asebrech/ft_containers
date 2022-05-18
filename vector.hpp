@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/05/17 18:37:02 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/18 12:36:25 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,6 +295,25 @@ namespace	ft
 					}
 					_size += n;
 				}
+			}
+
+			iterator	erase (iterator position) { return (erase(position, position + 1)); }
+
+			iterator	erase (iterator first, iterator last)
+			{
+				size_type	n = 0;
+				iterator	it;
+				for (it = first; it != last; it++)
+					n++;
+				for(it = first; it != last; it++)
+					_alloc.destroy(&(*it));
+				for(it = last; it != end(); it++)
+				{
+					_alloc.construct(&(*(it - n)), *it);  
+					_alloc.destroy(&(*it));
+				}
+				_size -= n;
+				return (first);
 			}
 
 			void	swap(vector & x)

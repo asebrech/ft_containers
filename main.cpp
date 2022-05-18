@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 13:00:22 by asebrech          #+#    #+#             */
-/*   Updated: 2022/05/17 18:11:42 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/05/18 12:37:12 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,22 @@
 
 void	test()
 {
-	ft::vector<int>	vector(5, 117);
+	ft::vector<int>	vector;
+	vector.push_back(117);
+	vector.push_back(118);
+	vector.push_back(119);
+	vector.push_back(120);
+	vector.push_back(121);
 	std::vector<int>	vec(5, 119);
 
 	ft::vector<int>::iterator	it;
 
 	//vector.reserve(11);	
 
+	vector.erase(vector.end() - 1);
+
 	//std::cout << "pos " << *vector.insert(vector.begin() + 2, 118) << std::endl;
-	vector.insert((vector.begin() + 2), 2, 118);
+	//vector.insert((vector.begin() + 2), 2, 118);
 	//vector.insert((vector.begin() + 2), vec.begin(), vec.end());
 	std::cout << "cap " << vector.capacity() << std::endl;
 	std::cout << "siz " << vector.size() << std::endl;
@@ -39,15 +46,22 @@ void	test()
 
 void	test2()
 {
-	std::vector<int>	vector(5, 117);
+	std::vector<int>	vector;
+	vector.push_back(117);
+	vector.push_back(118);
+	vector.push_back(119);
+	vector.push_back(120);
+	vector.push_back(121);
 	std::vector<int>	vec(5, 119);
 
 	std::vector<int>::iterator	it;
 
 	//vector.reserve(11);	
 
+	vector.erase(vector.end() - 1);
+
 	//std::cout << "pos " << *vector.insert((vector.begin() + 2), 8) << std::endl;
-	vector.insert((vector.begin() + 2), 2, 118);
+//	vector.insert((vector.begin() + 2), 2, 118);
 	//vector.insert((vector.begin() + 2), vec.begin(), vec.end());
 	std::cout << "cap " << vector.capacity() << std::endl;
 	std::cout << "siz " << vector.size() << std::endl;

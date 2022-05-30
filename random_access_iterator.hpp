@@ -46,7 +46,10 @@ namespace	ft
 			random_access_iterator(pointer ptr) : _ptr(ptr) {}
 			random_access_iterator(iterator const & src) { *this = src; }
 			virtual ~random_access_iterator() {}
+
 			iterator const & operator=(iterator const & rhs) {if (this != &rhs){_ptr = rhs._ptr;} return (*this);}
+			
+			operator random_access_iterator<const T>() const {random_access_iterator<const T> temp(this->_ptr); return (temp);}			
 
 			/* Operators : misc */
 

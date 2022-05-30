@@ -15,8 +15,7 @@
 
 # include <memory>
 # include <stdexcept>
-# include <limits>
-# include <sstream>
+# include <iterator>
 
 # include "type_traits.hpp"
 # include "random_access_iterator.hpp"
@@ -155,18 +154,18 @@ namespace	ft
 			reference	at(size_type n)
 			{
 				if (n >= _size)
-					_out_of_range(n);
+					throw	std::out_of_range("vector");
 				return(_data[n]);
 			}
 			const_reference	at(size_type n) const
 			{
 				if (n >= _size)
-					_out_of_range(n);
+					throw	std::out_of_range("vector");
 				return(_data[n]);
 			}
 
-			reference	front() { return(_data); }
-			const_reference	front() const { return(_data); }
+			reference	front() { return(*_data); }
+			const_reference	front() const { return(*_data); }
 
 			reference	back() { return(_data[_size - 1]); }
 			const_reference	back() const { return(_data[_size - 1]); }
@@ -179,8 +178,8 @@ namespace	ft
 					typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = false)
 			{
 				size_type	n = 0;
-				for (InputIterator it = first; it != last; it++)
-					n++;
+				n = ft::distance(first, last);
+
 				clear();
 				reserve(n);
 				_size = n;
@@ -198,13 +197,15 @@ namespace	ft
 			}
 
 			void	push_back(value_type const & val) { insert(end(), 1, val); } 
+
+			void	pop_back() { erase(end() - 1); }
 			
 			// single element
 			iterator	insert(iterator position, value_type const & val)
 			{
 				size_type	i = 0;
-				for (iterator it = begin(); it != position; it++)
-					i++;
+				i = ft::distance(begin(), position);
+
 				insert(position, 1, val);
 				return (begin() + i);
 			}
@@ -237,11 +238,14 @@ namespace	ft
 				}
 				else
 				{
-					size_type	i = 0;
-					for (iterator it = begin(); it != position; it++)
-						i++;
+					size_type	i = 0, k = 0, tmp = _size - 1;
+					i = ft::distance(begin(), position);	
+
 					for (size_type j = i; j < _size; j++)
-						_alloc.construct((_data + (j + n)), _data[j]);
+					{
+						_alloc.construct(_data + (tmp + n) - k, _data[tmp - k]);
+						k++;
+					}
 					for (size_type j = 0; j < n; j++)
 					{
 						_alloc.destroy(_data + i);
@@ -255,9 +259,7 @@ namespace	ft
 			void	insert(iterator position, InputIterator first, InputIterator last,
 					typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = false)
 			{
-				int	n = 0;
-				for (InputIterator it = first; it != last; it++)
-					n++;
+				size_type	n = ft::distance(first, last);
 				if((_size + n) > _capacity)
 				{
 					size_type	rsize = _capacity * 2;
@@ -283,11 +285,14 @@ namespace	ft
 				}
 				else
 				{
-					size_type	i = 0;
-					for (iterator it = begin(); it != position; it++)
-						i++;
+					size_type	i = 0, k = 0, tmp = _size - 1;
+					i = ft::distance(begin(), position);	
+
 					for (size_type j = i; j < _size; j++)
-						_alloc.construct((_data + (j + n)), _data[j]);
+					{
+						_alloc.construct(_data + (tmp + n) - k, _data[tmp - k]);
+						k++;
+					}
 					while (first != last)
 					{
 						_alloc.destroy(_data + i);
@@ -301,10 +306,8 @@ namespace	ft
 
 			iterator	erase (iterator first, iterator last)
 			{
-				size_type	n = 0;
+				size_type	n = ft::distance(first, last);
 				iterator	it;
-				for (it = first; it != last; it++)
-					n++;
 				for(it = first; it != last; it++)
 					_alloc.destroy(&(*it));
 				for(it = last; it != end(); it++)
@@ -330,19 +333,6 @@ namespace	ft
 				_size = 0;
 			}
 
-		private :
-						
-			/*	utiles functions	*/
-
-			void	_out_of_range(size_type n)
-			{
-				std::string	error(" vector::_M_range_check: __n (which is ");
-				error.append(ft::to_string(n));
-				error.append(") >= this->size() (which is ");
-				error.append(ft::to_string(_size));
-				error.push_back(')');
-				throw	std::out_of_range(error);
-			}
 	};
 };
 

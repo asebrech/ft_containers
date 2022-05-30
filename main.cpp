@@ -20,54 +20,61 @@
 
 void	test()
 {
-	ft::vector<int>	vector;
+	ft::vector<int>	vector(3, 117);
 	vector.push_back(117);
 	vector.push_back(118);
 	vector.push_back(119);
 	vector.push_back(120);
 	vector.push_back(121);
-	std::vector<int>	vec(5, 119);
 
 	ft::vector<int>::iterator	it;
 
-	//vector.reserve(11);	
+	ft::vector<int>::const_iterator v = it;;
 
-	vector.erase(vector.end() - 1);
+	v++;
 
-	//std::cout << "pos " << *vector.insert(vector.begin() + 2, 118) << std::endl;
-	//vector.insert((vector.begin() + 2), 2, 118);
-	//vector.insert((vector.begin() + 2), vec.begin(), vec.end());
-	std::cout << "cap " << vector.capacity() << std::endl;
-	std::cout << "siz " << vector.size() << std::endl;
+	//vector.erase(vector.end() - 1);
+
+	//vector.reserve(20);
+
+	std::cout << "insert : " << *vector.insert(vector.end() - 3, 400) << std::endl;
+	vector.insert(vector.begin() + 3, 5, 300);
 
 	for (it = vector.begin(); it != vector.end(); it++)
 		std::cout << "ft " << *it << std::endl;
+
+	std::cout << "cap " << vector.capacity() << std::endl;
+	std::cout << "siz " << vector.size() << std::endl;
 }
 
 void	test2()
 {
-	std::vector<int>	vector;
+	std::vector<int>	vector(3, 117);
 	vector.push_back(117);
 	vector.push_back(118);
 	vector.push_back(119);
 	vector.push_back(120);
 	vector.push_back(121);
-	std::vector<int>	vec(5, 119);
 
 	std::vector<int>::iterator	it;
 
-	//vector.reserve(11);	
+	std::vector<int>::const_iterator v = it;
 
-	vector.erase(vector.end() - 1);
+	v++;
 
-	//std::cout << "pos " << *vector.insert((vector.begin() + 2), 8) << std::endl;
-//	vector.insert((vector.begin() + 2), 2, 118);
-	//vector.insert((vector.begin() + 2), vec.begin(), vec.end());
-	std::cout << "cap " << vector.capacity() << std::endl;
-	std::cout << "siz " << vector.size() << std::endl;
+	//vector.erase(vector.end() - 1);
+
+	//vector.reserve(20);
+
+	std::cout << "insert : " << *vector.insert(vector.end() - 3, 400) << std::endl;
+	vector.insert(vector.begin() + 3, 5, 300);
+
 
 	for (it = vector.begin(); it != vector.end(); it++)
 		std::cout << "std " << *it << std::endl;
+
+	std::cout << "cap " << vector.capacity() << std::endl;
+	std::cout << "siz " << vector.size() << std::endl;
 }
 
 int	main()

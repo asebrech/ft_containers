@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/01 11:27:00 by alois            ###   ########.fr       */
+/*   Updated: 2022/06/01 11:48:14 by alois            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 # include <memory>
 # include <stdexcept>
 # include <iterator>
-
-# include "type_traits.hpp"
-# include "random_access_iterator.hpp"
-# include "reverse_iterator.hpp"
-# include "utile.hpp"
-# include "algorithm.hpp"
-
 # include <iostream>
+
+# include "vector/random_access_iterator.hpp"
+# include "srcs/type_traits.hpp"
+# include "srcs/reverse_iterator.hpp"
+# include "srcs/iterator.hpp"
+# include "srcs/algorithm.hpp"
+
 
 namespace	ft
 {

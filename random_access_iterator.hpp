@@ -67,16 +67,22 @@ namespace	ft
 			iterator	& operator-=(difference_type rhs) {_ptr -= rhs; return (*this);}
 			iterator	operator+(difference_type rhs) const { return (iterator(_ptr + rhs));}
 			iterator	operator-(difference_type rhs) const { return (iterator(_ptr - rhs));}
-			difference_type	operator-(iterator const & rhs) const { return (_ptr - rhs._ptr);}
+			//difference_type	operator-(iterator const & rhs) const { return (_ptr - rhs._ptr);}
 
 			/* Operators : comparison */
 
-			bool	operator==(iterator const & rhs) const {return (_ptr == rhs._ptr);}
-			bool	operator!=(iterator const & rhs) const {return (_ptr != rhs._ptr);}
-			bool	operator>(iterator const & rhs) const {return (_ptr > rhs._ptr);}
-			bool	operator<(iterator const & rhs) const {return (_ptr < rhs._ptr);}
-			bool	operator>=(iterator const & rhs) const {return (_ptr >= rhs._ptr);}
-			bool	operator<=(iterator const & rhs) const {return (_ptr <= rhs._ptr);}
+			template <class It>
+			bool	operator==(It const & rhs) const {return (_ptr == &(*rhs));}
+			template <class It>
+			bool	operator!=(It const & rhs) const {return (_ptr != &(*rhs));}
+			template <class It>
+			bool	operator>(It const & rhs) const {return (_ptr > &(*rhs));}
+			template <class It>
+			bool	operator<(It const & rhs) const {return (_ptr < &(*rhs));}
+			template <class It>
+			bool	operator>=(It const & rhs) const {return (_ptr >= &(*rhs));}
+			template <class It>
+			bool	operator<=(It const & rhs) const {return (_ptr <= &(*rhs));}
 
 		protected :
 
@@ -85,8 +91,13 @@ namespace	ft
 			pointer	_ptr;
 	};
 
+	template <typename L, typename R>
+ 	typename random_access_iterator<L>::difference_type operator-(const random_access_iterator<L> lhs, const random_access_iterator<R> rhs)
+	{ return (&(*lhs) - &(*rhs)); }
+
 	template <class T>
-	random_access_iterator<T>	operator+(typename random_access_iterator<T>::difference_type lhs, random_access_iterator<T> const & rhs) {return (random_access_iterator<T>(lhs + &(*rhs)));}
+	random_access_iterator<T>	operator+(typename random_access_iterator<T>::difference_type lhs, random_access_iterator<T> const & rhs)
+	{return (random_access_iterator<T>(lhs + &(*rhs)));}
 };
 
 #endif

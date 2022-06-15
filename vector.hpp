@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/01 11:48:14 by alois            ###   ########.fr       */
+/*   Updated: 2022/06/03 16:34:42 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ namespace	ft
 			typedef	random_access_iterator<const value_type>	const_iterator;
 			typedef	ft::reverse_iterator<iterator>	reverse_iterator;
 			typedef	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef iterator_traits<iterator>::difference_type	difference_type;
 			typedef typename allocator_type::size_type	size_type;
 
 		private :

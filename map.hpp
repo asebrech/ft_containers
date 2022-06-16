@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/16 15:24:04 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/16 19:12:00 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,19 @@
 
 #include "utility.hpp"
 #include "srcs/iterator_traits.hpp"
+#include "bidirectional_iterator.hpp"
 
 namespace	ft
 {
+	template <class T>	
+	struct Node
+	{
+		T	* data;
+		Node 	* parent;
+		Node	* left;
+		Node	* right;
+		int	color;
+	};
 
 	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< ft::pair <const Key, T> > >
 	class	map
@@ -38,6 +48,7 @@ namespace	ft
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;
+			typedef ft::bidirectional_iterator<value_type>	iterator;
 			typedef typename allocator_type::difference_type	difference_type;
 			typedef typename allocator_type::size_type	size_type;
 
@@ -46,17 +57,8 @@ namespace	ft
 			key_compare	compare;
 			allocator_type	alloc;
 
-			struct Node
-			{
-				value_type	* data;
-				Node 	* parent;
-				Node	* left;
-				Node	* right;
-				int	color;
-			};
-
-			typedef Node *	NodePtr;
-
+			typedef Node<value_type>	Node;
+			typedef	Node	* NodePtr;
 			NodePtr	root;
 			NodePtr	TNULL;	
 
@@ -70,7 +72,11 @@ namespace	ft
 				TNULL->right = nullptr;
 				root = TNULL;
 			}
-			~map() {};
+			virtual ~map() {};
+
+			iterator	begin() { return (iterator(minimum(root), TNULL)); }
+
+			iterator	end() { return (iterator(TNULL, TNULL)); }
 
 			void	insert(const value_type & val)
 			{
@@ -84,7 +90,7 @@ namespace	ft
 				node->color = 1;
 
 				NodePtr	y = nullptr;
-				NodePtr x = this->root;
+				NodePtr	x = this->root;
 
 				while (x != TNULL)
 				{
@@ -119,7 +125,8 @@ namespace	ft
 			{
 				NodePtr	node = this->root;
 				NodePtr	z = TNULL;
-				NodePtr x, y;
+				NodePtr	x;
+				NodePtr	y;
 				while (node != TNULL)
 				{
 					if (node->data->first == key)
@@ -184,7 +191,7 @@ namespace	ft
 
 			void	rightRotate(NodePtr x)
 			{
-				NodePtr y = x->left;
+				NodePtr	y = x->left;
 				x->left = y->right;
 				if (y->right != TNULL)
 					y->right->parent = x;
@@ -201,7 +208,7 @@ namespace	ft
 
 			void	leftRotate(NodePtr x)
 			{
-				NodePtr y = x->right;
+				NodePtr	y = x->right;
 				x->right = y->left;
 				if (y->left != TNULL)
 					y->left->parent = x;
@@ -231,6 +238,13 @@ namespace	ft
 			{
 				while (node->left != TNULL)
 					node = node->left;
+				return (node);
+			}
+
+			NodePtr	maximum(NodePtr node)
+			{
+				while (node->right != TNULL)
+					node = node->right;
 				return (node);
 			}
 

@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 15:57:18 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/16 15:20:40 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/16 19:19:54 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,29 @@ int main()
 
 	map.printTree();
 
+	ft::map<int, int>::iterator	it = map.begin();
+	//ft::map<int, int>::iterator	ite = map.end();
+
+	it++;
+	//ite--;
+
+	//std::cout << ite->second << std::endl;
+
+//	for (; it != map.end(); it++)
+//		std::cout << it->second << std::endl;
+
+
 	std::map<int, int>	mymap;
 
 	mymap.insert(std::pair<int, int>(50, 50));
-	std::cout << mymap.erase(50) << std::endl;
+	mymap.insert(std::pair<int, int>(60, 60));
+
+	//std::pair<int, int>	*c;
+
+	std::map<int, int>::iterator	itt = mymap.end();
+
+	itt--;
+	std::cout << itt->second  << std::endl;;
 
   return 0;
 }

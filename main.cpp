@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 15:57:18 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/15 19:43:22 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/16 15:20:40 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,52 +19,27 @@
 
 int main()
 {
-	ft::pair<std::string, int>	test;
-	ft::pair<std::string, int>	a("hello there", 117);
-	ft::pair<std::string, int>	b;
+	ft::map<int, int>		map;
 
-	b = ft::make_pair<std::string, int>("hello there", 117);
-
-	if (a == b)
-		std::cout << "okay\n";
-
-
-	std::map<char, int>	hello;
-	hello['a'] = 117;
-	hello['b'] = 118;
-	hello['c'] = 119;
-	hello['d'] = 120;
-
-	hello.erase('c');
-
-	std::cout << hello.size() << std::endl;
-
-
-
-	ft::pair<std::string, int>	* c;
-	std::allocator<ft::pair<std::string, int> >	alloc;
-	c = alloc.allocate(1);
-	alloc.construct(&c->first, "hello");
-	alloc.construct(&c->second, 117);
-	
-
-	//c->first = "hello";
-
-	std::cout << "c " << c->first << std::endl;
-	std::cout << "c " << c->second << std::endl;
-
-	alloc.destroy(c);
-	//alloc.deallocate(c, 1);
-
-	std::cout << "c " << c->first << std::endl;
-
-
-	ft::map<char, int>		map;
-
-	map.insert(ft::pair<char, int>('z', 117));
-	map.insert(ft::pair<char, int>('r', 18));
-	map.insert(ft::pair<char, int>('g', 119));
-	map.insert(ft::pair<char, int>('w', 20));
+	map.insert(ft::pair<int, int>(55, 55));
+	map.insert(ft::pair<int, int>(40, 40));
+	map.insert(ft::pair<int, int>(65, 65));
+	map.insert(ft::pair<int, int>(60, 60));
+	map.insert(ft::pair<int, int>(75, 75));
+	map.insert(ft::pair<int, int>(57, 57));
 
 	map.printTree();
+
+	std::cout << "\n Afeter deletion\n";
+
+	map.erase(40);
+
+	map.printTree();
+
+	std::map<int, int>	mymap;
+
+	mymap.insert(std::pair<int, int>(50, 50));
+	std::cout << mymap.erase(50) << std::endl;
+
+  return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/15 19:40:44 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/16 15:24:04 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,67 @@ namespace	ft
 
 				if (node->parent->parent == nullptr)
 					return;
+
+				insertFix(node);
+			}
+
+			void	erase(const key_type & key)
+			{
+				NodePtr	node = this->root;
+				NodePtr	z = TNULL;
+				NodePtr x, y;
+				while (node != TNULL)
+				{
+					if (node->data->first == key)
+						z = node;
+					if (compare(key, node->data->first))
+						node = node->left;
+					else
+						node = node->right;
+				}
+
+				if (z == TNULL)
+				{
+					std::cout << "key not found in the tree" << std::endl;
+					return;
+				}
+
+				y = z;
+				int	y_original_color = y->color;
+				if (z->left == TNULL)
+				{
+					x = z->right;
+					rbTransplant(z, z->right);
+				}
+				else if (z->right == TNULL)
+				{
+					x = z->left;
+					rbTransplant(z, z->left);
+				}
+				else
+				{
+					y = minimum(z->right);
+					y_original_color = y->color;
+					x = y->right;
+					if (y->parent == z)
+						x->parent = y;
+					else
+					{
+						rbTransplant(y, y->right);
+						y->right = z->right;
+						y->right->parent = y;
+					}
+
+					rbTransplant(z, y);
+					y->left = z->left;
+					y->left->parent = y;
+					y->color = z->color;
+				}
+				alloc.destroy(z->data);
+				alloc.deallocate(z->data, 1);
+				delete z;
+				if (y_original_color == 0)
+					deleteFix(x);
 			}
 
 			void	printTree()
@@ -120,6 +181,185 @@ namespace	ft
 			}
 
 		private :
+
+			void	rightRotate(NodePtr x)
+			{
+				NodePtr y = x->left;
+				x->left = y->right;
+				if (y->right != TNULL)
+					y->right->parent = x;
+				y->parent = x->parent;
+				if (x->parent == nullptr)
+					this->root = y;
+				else if (x == x->parent->right)
+					x->parent->right = y;
+				else
+					x->parent->left = y;
+				y->right = x;
+				x->parent = y;
+			}
+
+			void	leftRotate(NodePtr x)
+			{
+				NodePtr y = x->right;
+				x->right = y->left;
+				if (y->left != TNULL)
+					y->left->parent = x;
+				y->parent = x->parent;
+				if (x->parent == nullptr)
+					this->root = y;
+				else if (x == x->parent->left)
+					x->parent->left = y;
+				else
+					x->parent->right = y;
+				y->left = x;
+				x->parent = y;
+			}
+
+			void	rbTransplant (NodePtr u, NodePtr v)
+			{
+				if (u->parent == nullptr)
+					root = v;
+				else if (u == u->parent->left)
+					u->parent->left = v;
+				else
+					u->parent->right = v;
+				v->parent = u->parent;
+			}
+
+			NodePtr	minimum(NodePtr node)
+			{
+				while (node->left != TNULL)
+					node = node->left;
+				return (node);
+			}
+
+			void	insertFix(NodePtr k)
+			{
+				NodePtr	u;
+				while (k->parent->color == 1)
+				{
+					if (k->parent == k->parent->parent->right)
+					{
+						u = k->parent->parent->left;
+						if (u->color == 1)
+						{
+							u->color = 0;
+							k->parent->color = 0;
+							k->parent->parent->color = 1;
+							k = k->parent->parent;
+						}
+						else
+						{
+							if (k == k->parent->left)
+							{
+								k = k->parent;
+								rightRotate(k);
+							}
+							k->parent->color = 0;
+							k->parent->parent->color = 1;
+							leftRotate(k->parent->parent);
+						}
+					}
+					else
+					{
+						u = k->parent->parent->right;
+						if (u->color == 1)
+						{
+							u->color = 0;
+							k->parent->color = 0;
+							k->parent->parent->color = 1;
+							k = k->parent->parent;
+						}
+						else
+						{
+							if (k == k->parent->right)
+							{
+								k = k->parent;
+								leftRotate(k);
+							}
+							k->parent->color = 0;
+							k->parent->parent->color = 1;
+							rightRotate(k->parent->parent);
+						}
+					}
+					if (k == root)
+						break;
+				}
+				root->color = 0;
+			}
+
+			void deleteFix(NodePtr x)
+			{
+				NodePtr	s;
+				while (x != root && x->color == 0)
+				{
+					if (x == x->parent->left)
+					{
+						s = x->parent->right;
+						if (s->color == 1)
+						{
+							s->color = 0;
+							x->parent->color = 1;
+							leftRotate(x->parent);
+							s = x->parent->right;
+						}
+						if (s->left->color == 0 && s->right->color == 0)
+						{
+							s->color = 1;
+							x = x->parent;
+						}
+						else
+						{
+							if (s->right->color == 0)
+							{
+								s->left->color = 0;
+								s->color = 1;
+								rightRotate(s);
+								s = x->parent->right;
+							}
+							s->color = x->parent->color;
+							x->parent->color = 0;
+							s->right->color = 0;
+							leftRotate(x->parent);
+							x = root;
+						}
+					}
+					else
+					{
+						s = x->parent->left;
+						if (s->color == 1)
+						{
+							s->color = 0;
+							x->parent->color = 1;
+							rightRotate(x->parent);
+							s = x->parent->left;
+						}
+						if (s->right->color == 0 && s->left->color == 0)
+						{
+							s->color = 1;
+							x = x->parent;
+						}
+						else
+						{
+							if (s->left->color == 0)
+							{
+								s->right->color = 0;
+								s->color = 1;
+								leftRotate(s);
+								s = x->parent->left;
+							}
+							s->color = x->parent->color;
+							x->parent->color = 0;
+							s->left->color = 0;
+							rightRotate(x->parent);
+							x = root;
+
+						}
+					}
+				}
+				x->color = 0;
+			}
 			
 		void printHelper(NodePtr root, std::string indent, bool last) {
 			if (root != TNULL) {

@@ -423,4 +423,6 @@ int main() {
 		<< "After deleting" << endl;
 	bst.deleteNode(40);
 	bst.printTree();
+
+	bst.inorder();
 }

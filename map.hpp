@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/16 19:12:00 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:29:56 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ namespace	ft
 			typedef typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;
 			typedef ft::bidirectional_iterator<value_type>	iterator;
+			typedef ft::bidirectional_iterator<const value_type>	const_iterator;
 			typedef typename allocator_type::difference_type	difference_type;
 			typedef typename allocator_type::size_type	size_type;
 
@@ -66,6 +67,7 @@ namespace	ft
 			explicit map (const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : compare(comp), alloc(alloc)
 			{
 				TNULL = new Node;
+				TNULL->parent = nullptr;
 				TNULL->data = this->alloc.allocate(1);
 				TNULL->color = 0;
 				TNULL->left = nullptr;
@@ -74,9 +76,11 @@ namespace	ft
 			}
 			virtual ~map() {};
 
-			iterator	begin() { return (iterator(minimum(root), TNULL)); }
+			iterator	begin() { return (iterator(minimum(root), maximum(root), TNULL)); }
+			const_iterator	begin() const  { return (const_iterator(minimum(root), maximum(root), TNULL)); }
 
-			iterator	end() { return (iterator(TNULL, TNULL)); }
+			iterator	end() { return (iterator(TNULL, maximum(root), TNULL)); }
+			const_iterator	end() const { return (const_iterator(TNULL, maximum(root), TNULL)); }
 
 			void	insert(const value_type & val)
 			{
@@ -180,6 +184,9 @@ namespace	ft
 				if (y_original_color == 0)
 					deleteFix(x);
 			}
+
+			iterator	find(const key_type & k) { return (iterator(searchTree(root, k), maximum(root), TNULL));}
+			const_iterator	find(const key_type & k) const { return (const_iterator(searchTree(root, k), maximum(root), TNULL)); }
 
 			void	printTree()
 			{
@@ -374,7 +381,16 @@ namespace	ft
 				}
 				x->color = 0;
 			}
-			
+
+			NodePtr	searchTree(NodePtr node, const key_type & key)
+			{
+				if (node == TNULL || key == node->data->first)
+					return (node);
+				if (compare(key, node->data->first))
+					return (searchTree(node->left, key));
+				return (searchTree(node->right, key));
+			}
+
 		void printHelper(NodePtr root, std::string indent, bool last) {
 			if (root != TNULL) {
 				std::cout << indent;

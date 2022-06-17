@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 12:13:41 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/16 19:06:23 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:47:19 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,38 +38,42 @@ namespace	ft
 		private :
 
 			typedef bidirectional_iterator	iterator;
-			typedef	Node<value_type>	Node;
-			typedef	Node *	NodePtr;
+			typedef	Node<value_type> *	NodePtr;
 
-			NodePtr	root;
+			NodePtr	current;
+			NodePtr	max;
 			NodePtr	TNULL;	
 
 		public :
 
 			/* Lifecyle */
 
-			bidirectional_iterator(void) : root(NULL), TNULL(NULL) {}
-			bidirectional_iterator(NodePtr root, NodePtr TNULL) : root(root), TNULL(TNULL) {}
+			bidirectional_iterator(void) : current(NULL), max(NULL), TNULL(NULL) {}
+			bidirectional_iterator(NodePtr current, NodePtr max, NodePtr TNULL) : current(current), max(max), TNULL(TNULL) {}
 			bidirectional_iterator(iterator const & src) { *this = src; }
 			virtual ~bidirectional_iterator() {}
 
-			iterator const & operator=(iterator const & rhs) {if (this != &rhs) {root = rhs.root; TNULL = rhs.TNULL;} return (*this);}
+			iterator const & operator=(iterator const & rhs) {if (this != &rhs) {current = rhs.current; max = rhs.max; TNULL = rhs.TNULL;} return (*this);}
 			
-			operator bidirectional_iterator<const T>() const {bidirectional_iterator<const T> temp(this->_ptr); return (temp);}			
+			operator bidirectional_iterator<const T>() const
+			{
+				bidirectional_iterator<const T> temp(reinterpret_cast<Node<const T> *>(current), reinterpret_cast<Node<const T> *>(max), reinterpret_cast<Node<const T> *>(TNULL));
+				return (temp);
+			}			
 
-			reference	operator*() const {return (*root->data);}
-			pointer		operator->() const {return (root->data);}
+			reference	operator*() const {return (*current->data);}
+			pointer		operator->() const {return (current->data);}
 
-			iterator	& operator++() {root = successor(root); return (*this);}
+			iterator	& operator++() {current = successor(current); return (*this);}
 			iterator	operator++(int) { iterator tmp(*this); ++*this; return (tmp);}
-			iterator	& operator--() {root = predecessor(root); return (*this);}
+			iterator	& operator--() {current = predecessor(current); return (*this);}
 			iterator	operator--(int) {iterator tmp(*this); --*this; return (tmp);}
 
 			
 			template <class It>
-			bool	operator==(It const & rhs) const {return (root->data == &(*rhs));}
+			bool	operator==(It const & rhs) const {return (current->data == &(*rhs));}
 			template <class It>
-			bool	operator!=(It const & rhs) const {return (root->data != &(*rhs));}
+			bool	operator!=(It const & rhs) const {return (current->data != &(*rhs));}
 
 		private :
 
@@ -89,6 +93,8 @@ namespace	ft
 
 			NodePtr	successor(NodePtr x)
 			{
+				if (x == max)
+					return (TNULL);
 				if (x->right != TNULL)
 					return (minimum(x->right));
 
@@ -103,6 +109,8 @@ namespace	ft
 
 			NodePtr	predecessor(NodePtr x)
 			{
+				if (x == TNULL)
+					return (max);
 				if (x->left != TNULL)
 					return (maximum(x->left));
 

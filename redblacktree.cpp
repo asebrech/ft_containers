@@ -253,6 +253,7 @@ class RedBlackTree {
 	public:
 		RedBlackTree() {
 			TNULL = new Node;
+			TNULL->parent = nullptr;
 			TNULL->color = 0;
 			TNULL->left = nullptr;
 			TNULL->right = nullptr;
@@ -290,6 +291,8 @@ class RedBlackTree {
 		}
 
 		NodePtr successor(NodePtr x) {
+			if (x->right == TNULL && x->left == TNULL)
+				return (TNULL);
 			if (x->right != TNULL) {
 				return minimum(x->right);
 			}
@@ -298,6 +301,7 @@ class RedBlackTree {
 			while (y != TNULL && x == y->right) {
 				x = y;
 				y = y->parent;
+			std::cout << "\n test" << std::endl;
 			}
 			return y;
 		}
@@ -425,4 +429,6 @@ int main() {
 	bst.printTree();
 
 	bst.inorder();
+
+	bst.successor(bst.searchTree(75));
 }

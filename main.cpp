@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 15:57:18 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/16 19:19:54 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/17 17:38:23 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,35 +30,53 @@ int main()
 
 	map.printTree();
 
-	std::cout << "\n Afeter deletion\n";
+//	std::cout << "\n Afeter deletion\n";
 
-	map.erase(40);
+//	map.erase(40);
 
-	map.printTree();
+//	map.printTree();
 
 	ft::map<int, int>::iterator	it = map.begin();
-	//ft::map<int, int>::iterator	ite = map.end();
+	ft::map<int, int>::iterator	ite = map.end();
 
-	it++;
-	//ite--;
+	//it--;
+//	std::cout  << "end "<< ite->second << std::endl;
 
-	//std::cout << ite->second << std::endl;
+	ite--;
+	for (; ite != it; ite--)
+		std::cout << ite->second << std::endl;
 
-//	for (; it != map.end(); it++)
-//		std::cout << it->second << std::endl;
+	ft::map<int, int>::const_iterator	cit;
 
+	cit = map.find(65);
+
+	std::cout << "find "  << cit->second << std::endl;
+
+
+	std::cout << "\n mymap \n "  << std::endl;
 
 	std::map<int, int>	mymap;
 
-	mymap.insert(std::pair<int, int>(50, 50));
+	mymap.insert(std::pair<int, int>(55, 55));
+	mymap.insert(std::pair<int, int>(40, 40));
+	mymap.insert(std::pair<int, int>(65, 65));
 	mymap.insert(std::pair<int, int>(60, 60));
+	mymap.insert(std::pair<int, int>(75, 75));
+	mymap.insert(std::pair<int, int>(57, 57));
 
-	//std::pair<int, int>	*c;
+	std::map<int, int>::iterator	mit = mymap.begin();
+	std::map<int, int>::iterator	mite = mymap.end();
 
-	std::map<int, int>::iterator	itt = mymap.end();
+//	mit--;
+	mite--;
+	for (; mite != mit; mite--)
+		std::cout << mite->second << std::endl;
 
-	itt--;
-	std::cout << itt->second  << std::endl;;
+	std::map<int, int>::const_iterator	mitt;
+	mitt = mymap.find(65);
+
+
+	std::cout << "find "  << mitt->second << std::endl;
 
   return 0;
 }

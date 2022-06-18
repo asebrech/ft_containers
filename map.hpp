@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/17 17:29:56 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/18 15:37:07 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@
 
 #include <iostream>
 
-#include "utility.hpp"
 #include "srcs/iterator_traits.hpp"
+#include "srcs/reverse_iterator.hpp"
+#include "utility.hpp"
 #include "bidirectional_iterator.hpp"
 
 namespace	ft
@@ -50,6 +51,8 @@ namespace	ft
 			typedef typename allocator_type::const_pointer	const_pointer;
 			typedef ft::bidirectional_iterator<value_type>	iterator;
 			typedef ft::bidirectional_iterator<const value_type>	const_iterator;
+			typedef ft::reverse_iterator<iterator>	reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			typedef typename allocator_type::difference_type	difference_type;
 			typedef typename allocator_type::size_type	size_type;
 
@@ -64,6 +67,9 @@ namespace	ft
 			NodePtr	TNULL;	
 
 		public :
+
+			/*	Membrer functions	*/
+
 			explicit map (const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : compare(comp), alloc(alloc)
 			{
 				TNULL = new Node;
@@ -76,11 +82,19 @@ namespace	ft
 			}
 			virtual ~map() {};
 
+			/*	Iterartors	*/			
+
 			iterator	begin() { return (iterator(minimum(root), maximum(root), TNULL)); }
 			const_iterator	begin() const  { return (const_iterator(minimum(root), maximum(root), TNULL)); }
 
 			iterator	end() { return (iterator(TNULL, maximum(root), TNULL)); }
 			const_iterator	end() const { return (const_iterator(TNULL, maximum(root), TNULL)); }
+
+			reverse_iterator	rbegin() { return (reverse_iterator(end())); }
+			const_reverse_iterator	rbegin() const  { return (const_reverse_iterator(end())); }
+
+			reverse_iterator	rend() { return (reverse_iterator(begin())); }
+			const_reverse_iterator	rend() const  { return (const_reverse_iterator(begin())); }
 
 			void	insert(const value_type & val)
 			{
@@ -188,11 +202,50 @@ namespace	ft
 			iterator	find(const key_type & k) { return (iterator(searchTree(root, k), maximum(root), TNULL));}
 			const_iterator	find(const key_type & k) const { return (const_iterator(searchTree(root, k), maximum(root), TNULL)); }
 
-			void	printTree()
+			size_type	count(const key_type & k) const { return ((searchTree(root, k) == TNULL) ? 0 : 1); }
+
+			iterator	lower_bound(const key_type & k)
 			{
-				if (root)
-					printHelper(this->root, "", true);
+				iterator	it;
+
+				for (it = begin(); it != end(); it++)
+					if (!compare(it->first, k))
+						return (it);
+				return (it);
 			}
+			const_iterator	lower_bound(const key_type & k) const
+			{
+				const_iterator	it;
+
+				for (it = begin(); it != end(); it++)
+					if (!compare(it->first, k))
+						return (it);
+				return (it);
+			}
+			
+			iterator	upper_bound(const key_type & k)
+			{
+				iterator	it;
+
+				for (it = begin(); it != end(); it++)
+					if (compare(k, it->first))
+						return (it);
+				return (it);
+			}
+			const_iterator	upper_bound(const key_type & k) const
+			{
+				const_iterator	it;
+
+				for (it = begin(); it != end(); it++)
+					if (compare(k, it->first))
+						return (it);
+				return (it);
+			}
+
+			ft::pair<iterator, iterator>	equal_range(const key_type & k)
+				{ return (ft::pair<iterator, iterator>(lower_bound(k), upper_bound(k))); }
+			ft::pair<const_iterator, const_iterator>	equal_range(const key_type & k) const
+				{ return (ft::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k))); }
 
 		private :
 
@@ -382,7 +435,7 @@ namespace	ft
 				x->color = 0;
 			}
 
-			NodePtr	searchTree(NodePtr node, const key_type & key)
+			NodePtr	searchTree(NodePtr node, const key_type & key) const
 			{
 				if (node == TNULL || key == node->data->first)
 					return (node);
@@ -390,26 +443,6 @@ namespace	ft
 					return (searchTree(node->left, key));
 				return (searchTree(node->right, key));
 			}
-
-		void printHelper(NodePtr root, std::string indent, bool last) {
-			if (root != TNULL) {
-				std::cout << indent;
-				if (last) {
-					std::cout << "R----";
-					indent += "   ";
-				} else {
-					std::cout << "L----";
-					indent += "|  ";
-				}
-
-				std::string sColor = root->color ? "RED" : "BLACK";
-				std::cout << root->data->second << "(" << sColor << ")" << std::endl;
-				printHelper(root->left, indent, false);
-				printHelper(root->right, indent, true);
-
-			}
-		}
-		//	void	initializeNULLNode(NodePtr node, NodePtr parent);
 	};
 
 };

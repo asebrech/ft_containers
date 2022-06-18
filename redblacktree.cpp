@@ -291,8 +291,6 @@ class RedBlackTree {
 		}
 
 		NodePtr successor(NodePtr x) {
-			if (x->right == TNULL && x->left == TNULL)
-				return (TNULL);
 			if (x->right != TNULL) {
 				return minimum(x->right);
 			}

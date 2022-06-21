@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/09 11:00:00 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/18 15:42:41 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/21 17:59:49 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ namespace	ft
 
 			/* constructor */
 
-			reverse_iterator() : _current(NULL) {}
+			reverse_iterator() {}
 			reverse_iterator(iterator_type it) : _current(it) {}
 			reverse_iterator(reverse_iterator<Iterator> const & src) { *this = src; }
 			reverse_iterator const & operator=(reverse_iterator<Iterator> const & rhs)
@@ -52,8 +52,8 @@ namespace	ft
 
 			/* operators */
 
-			reference	operator*() const { return (*(this->_current - 1)); }
-			pointer		operator->() const { return (&(*(this->_current - 1))); }
+			reference	operator*() const { Iterator tmp = _current; return (*(--tmp)); }
+			pointer		operator->() const { Iterator tmp = _current; return (&(*(--tmp))); }
 			reference	operator[](difference_type n) const { return (this->_current[-n-1]); }		
 
 			/* arithmetic */

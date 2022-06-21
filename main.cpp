@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/02 15:57:18 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/18 15:50:58 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/21 15:45:04 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,16 @@ int main()
 	map.insert(ft::pair<int, int>(75, 75));
 	map.insert(ft::pair<int, int>(57, 57));
 
+	ft::map<int, int>::iterator	it;
 
-//	std::cout << "\n Afeter deletion\n";
+	ft::map<int, int>	test;
+	test = map;
 
-//	map.erase(40);
+	for (it = test.begin(); it != test.end(); it++)
+		std::cout << it ->first << std::endl;
 
-//	map.printTree();
-
-	ft::map<int, int>::iterator	it = map.begin();
-	ft::map<int, int>::iterator	ite = map.end();
-
-	//it--;
-//	std::cout  << "end "<< ite->second << std::endl;
-
-	ite--;
-	for (; ite != it; ite--)
-		std::cout << ite->second << std::endl;
-
-	ft::map<int, int>::const_iterator	cit;
-
-	cit = map.find(65);
-
-	std::cout << "find "  << cit->second << std::endl;
-
-	std::cout << "count " << map.count(40) << std::endl;
-
-	it = map.upper_bound(58);
-
-	std::cout << "lower " << it->second << std::endl;
-
-	ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>	ip;
-
-	ip = map.equal_range(60);
-
-	std::cout << ip.first->second << ip.second->first << std::endl;
+	map[33] = 33;
+	std::cout << map[33] << "  " << map.size() << std::endl;
 
 	std::cout << "\n mymap \n "  << std::endl;
 
@@ -74,32 +50,7 @@ int main()
 	mymap.insert(std::pair<int, int>(75, 75));
 	mymap.insert(std::pair<int, int>(57, 57));
 
-	std::map<int, int>::iterator	mit = mymap.begin();
-	std::map<int, int>::iterator	mite = mymap.end();
-
-//	mit--;
-	mite--;
-	for (; mite != mit; mite--)
-		std::cout << mite->second << std::endl;
-
-	std::map<int, int>::const_iterator	mitt;
-	mitt = mymap.find(65);
-
-
-	std::cout << "find "  << mitt->second << std::endl;
-
-	std::cout << "count " << mymap.count(40) << std::endl;
-
-	mit = mymap.upper_bound(58);
-
-	std::cout << "lower " << mit->second << std::endl;
-
-	std::pair<std::map<int, int>::iterator, std::map<int, int>::iterator>	p;
-
-	p = mymap.equal_range(60);
-
-	std::cout << p.first->second << p.second->first  << std::endl;
-
+	std::cout << mymap[33] << "  " << mymap.size() << std::endl;
 
   return 0;
 }

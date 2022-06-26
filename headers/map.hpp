@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/21 18:11:50 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/26 15:39:55 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 #include <functional>
 #include <memory>
+#include <limits>
 
-#include <iostream>
-
-#include "srcs/iterator_traits.hpp"
-#include "srcs/algorithm.hpp"
-#include "srcs/reverse_iterator.hpp"
-#include "utility.hpp"
-#include "bidirectional_iterator.hpp"
+#include "../map/utility.hpp"
+#include "../map/bidirectional_iterator.hpp"
+#include "../srcs/type_traits.hpp"
+#include "../srcs/iterator_traits.hpp"
+#include "../srcs/reverse_iterator.hpp"
+#include "../srcs/algorithm.hpp"
 
 namespace	ft
 {
@@ -35,6 +35,15 @@ namespace	ft
 		Node	* right;
 		int	color;
 	};
+
+	/*
+	* A red-black tree T is a binary search tree having following five additional properties
+	* Every node in T is either red or black.
+	* The root node of T is black.
+	* Every NULL node is black.
+	* If a node is red, both of its children are black. This means no two nodes on a path can be red nodes.
+	* Every path from a root node to a NULL node has the same number of black nodes.
+	*/
 
 	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< ft::pair <const Key, T> > >
 	class	map
@@ -98,7 +107,9 @@ namespace	ft
 			//range
 			template <class InputIterator>
 			map(InputIterator first, InputIterator last,
-				const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : compare(comp), alloc(alloc), _size(0)
+				const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type(),
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = false)
+				: compare(comp), alloc(alloc), _size(0)
 			{
 				TNULL = new Node;
 				TNULL->parent = nullptr;
@@ -176,6 +187,8 @@ namespace	ft
 				if ((node = searchTree(root, val.first)) != TNULL)
 					return (ft::pair<iterator, bool>(iterator(node, maximum(root), TNULL), false));
 
+				// normal BST insertion
+
 				node = new Node;
 				node->parent = nullptr;
 				node->data = this->alloc.allocate(1);
@@ -228,7 +241,8 @@ namespace	ft
 
 			//range
 			template <class InputIterator>
-			void	insert(InputIterator first, InputIterator last)
+			void	insert(InputIterator first, InputIterator last,
+					typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = false)
 			{
 				while (first != last)
 					insert(*first++);
@@ -258,6 +272,7 @@ namespace	ft
 				if (z == TNULL)
 					return(0);
 
+				// normal BST deletion
 				y = z;
 				int	y_original_color = y->color;
 				if (z->left == TNULL)
@@ -384,6 +399,10 @@ namespace	ft
 
 		private :
 
+			/*
+			* The right rotation at node x makes x goes down in the right direction and as a result, its left child goes up.
+			*/
+
 			void	rightRotate(NodePtr x)
 			{
 				NodePtr	y = x->left;
@@ -400,6 +419,10 @@ namespace	ft
 				y->right = x;
 				x->parent = y;
 			}
+
+			/*
+			* The left rotation at node x makes x goes down in the left direction and as a result, its right child goes up.
+			*/
 
 			void	leftRotate(NodePtr x)
 			{
@@ -457,6 +480,11 @@ namespace	ft
 						u = k->parent->parent->left;
 						if (u->color == 1)
 						{
+						/*
+						* P is red and U is red too.
+						* In this case, we flip the color of nodes P,U, and G.
+						* That means, P becomes black, U becomes black and, G becomes red.
+						*/
 							u->color = 0;
 							k->parent->color = 0;
 							k->parent->parent->color = 1;
@@ -464,11 +492,21 @@ namespace	ft
 						}
 						else
 						{
+						/*
+						* P is right child of G and K is left child of P.
+						* In this case, we first do the right-rotation at P.
+						* This reduces it to the case below.
+						*/
 							if (k == k->parent->left)
 							{
 								k = k->parent;
 								rightRotate(k);
 							}
+						/*
+						* P is right child of G and K is right child of P.
+						* We first change the color of G to red and P to black
+						* Next, we perform the left-rotation at G that makes G the new sibling S of K.
+						*/
 							k->parent->color = 0;
 							k->parent->parent->color = 1;
 							leftRotate(k->parent->parent);
@@ -476,6 +514,9 @@ namespace	ft
 					}
 					else
 					{
+					/*
+					* This is the mirror of the cases above but for the opposite side.
+					*/
 						u = k->parent->parent->right;
 						if (u->color == 1)
 						{
@@ -512,6 +553,11 @@ namespace	ft
 						s = x->parent->right;
 						if (s->color == 1)
 						{
+						/*
+						* x’s sibling S is red.
+						* In this case, we switch the colors of S and x.parent and then perform the left rotation on x.parent.
+						* This reduce to the cases below.
+						*/
 							s->color = 0;
 							x->parent->color = 1;
 							leftRotate(x->parent);
@@ -519,6 +565,11 @@ namespace	ft
 						}
 						if (s->left->color == 0 && s->right->color == 0)
 						{
+						/*
+						* both of S’s children are black.
+						* The color of x’s parent can be red or black. We switch the color of S to red
+						* We make x’s parent a new x and repeat the process from the beginning.
+						*/
 							s->color = 1;
 							x = x->parent;
 						}
@@ -526,11 +577,23 @@ namespace	ft
 						{
 							if (s->right->color == 0)
 							{
+							/*
+							* x’s sibling S is black, S’s left child is red, and S’s right child is black.
+							* We can switch the colors of S and its left child S.left and then
+							* perform a right rotation on w without violating any of the red-black properties.
+							* This transforms the tree into case below.
+							*/
 								s->left->color = 0;
 								s->color = 1;
 								rightRotate(s);
 								s = x->parent->right;
 							}
+						/*
+						* x’s sibling S is black, and S’s right child is red.
+						* This is a terminal case. We change the color of S’s right child to black,
+						* x’s parent to black and perform the left rotation x’ parent node.
+						* This way we remove the extra black node on x.
+						*/
 							s->color = x->parent->color;
 							x->parent->color = 0;
 							s->right->color = 0;
@@ -540,6 +603,9 @@ namespace	ft
 					}
 					else
 					{
+					/*
+					* This is the mirror of the cases above but for the opposite side.
+					*/
 						s = x->parent->left;
 						if (s->color == 1)
 						{

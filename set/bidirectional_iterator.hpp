@@ -6,16 +6,16 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 12:13:41 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/20 17:34:57 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/26 17:31:41 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BIDIRECTIONAL_ITERATOR_HPP
 # define BIDIRECTIONAL_ITERATOR_HPP
 
-# include "srcs/iterator_traits.hpp"
+# include "../srcs/iterator_traits.hpp"
 
-# include "map.hpp"
+# include "../headers/set.hpp"
 
 namespace	ft
 {
@@ -59,7 +59,7 @@ namespace	ft
 			{
 				bidirectional_iterator<const T> temp(reinterpret_cast<Node<const T> *>(current), reinterpret_cast<Node<const T> *>(max), reinterpret_cast<Node<const T> *>(TNULL));
 				return (temp);
-			}			
+			}	
 
 			reference	operator*() const {return (*current->data);}
 			pointer		operator->() const {return (current->data);}

@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 12:13:41 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/27 14:54:34 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/27 17:21:22 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define BIDIRECTIONAL_ITERATOR_HPP
 
 # include "../srcs/iterator_traits.hpp"
-
-# include "../headers/set.hpp"
 
 namespace	ft
 {
@@ -49,17 +47,17 @@ namespace	ft
 			/* Lifecyle */
 
 			bidirectional_iterator(void) : current(NULL), max(NULL), TNULL(NULL) {}
-			bidirectional_iterator(const NodePtr current, const NodePtr max, const NodePtr TNULL) : current(current), max(max), TNULL(TNULL) {}
-			bidirectional_iterator(const iterator & src) { *this = src; }
+			bidirectional_iterator(NodePtr current, NodePtr max, NodePtr TNULL) : current(current), max(max), TNULL(TNULL) {}
+			bidirectional_iterator(iterator const & src) { *this = src; }
 			virtual ~bidirectional_iterator() {}
 
-			iterator const & operator=(const iterator & rhs) {if (this != &rhs) {current = rhs.current; max = rhs.max; TNULL = rhs.TNULL;} return (*this);}
+			iterator const & operator=(iterator const & rhs) {if (this != &rhs) {current = rhs.current; max = rhs.max; TNULL = rhs.TNULL;} return (*this);}
 			
 			operator bidirectional_iterator<const T>() const
 			{
 				bidirectional_iterator<const T> temp(reinterpret_cast<Node<const T> *>(current), reinterpret_cast<Node<const T> *>(max), reinterpret_cast<Node<const T> *>(TNULL));
 				return (temp);
-			}
+			}			
 
 			reference	operator*() const {return (*current->data);}
 			pointer		operator->() const {return (current->data);}

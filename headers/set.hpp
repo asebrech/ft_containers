@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/27 15:13:39 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/27 17:33:41 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,9 @@
 
 #include <functional>
 #include <memory>
-#include <limits>
 
-#include "../map/utility.hpp"
-#include "../set/bidirectional_iterator.hpp"
+#include "../srcs/utility.hpp"
+#include "../srcs/bidirectional_iterator.hpp"
 #include "../srcs/type_traits.hpp"
 #include "../srcs/iterator_traits.hpp"
 #include "../srcs/reverse_iterator.hpp"
@@ -75,6 +74,7 @@ namespace	ft
 			typedef Node<const value_type>	* const_Node;
 			typedef Node<value_type>	Node;
 			typedef	Node	* NodePtr;
+			std::allocator<Node>	allocNode;
 			NodePtr	root;
 			NodePtr	TNULL;	
 
@@ -85,7 +85,7 @@ namespace	ft
 			//empty
 			explicit set(const key_compare & comp = key_compare(), const allocator_type & alloc = allocator_type()) : compare(comp), alloc(alloc), _size(0)
 			{
-				TNULL = new Node;
+				TNULL = allocNode.allocate(1);
 				TNULL->parent = nullptr;
 				TNULL->data = this->alloc.allocate(1);
 				TNULL->color = 0;
@@ -101,7 +101,7 @@ namespace	ft
 				typename ft::enable_if<!ft::is_integral<InputIterator>::value, bool>::type = false)
 				: compare(comp), alloc(alloc), _size(0)
 			{
-				TNULL = new Node;
+				TNULL = allocNode.allocate(1);
 				TNULL->parent = nullptr;
 				TNULL->data = this->alloc.allocate(1);
 				TNULL->color = 0;
@@ -114,7 +114,7 @@ namespace	ft
 			//copy
 			set(const set & x) : compare(x.compare), alloc(x.alloc), _size(0)
 			{
-				TNULL = new Node;
+				TNULL = allocNode.allocate(1);
 				TNULL->parent = nullptr;
 				TNULL->data = this->alloc.allocate(1);
 				TNULL->color = 0;
@@ -137,7 +137,7 @@ namespace	ft
 				clear();
 				alloc.destroy(TNULL->data);
 				alloc.deallocate(TNULL->data, 1);
-				delete TNULL;
+				allocNode.deallocate(TNULL, 1);
 			}
 
 			/*	Iterartors	*/			
@@ -164,7 +164,7 @@ namespace	ft
 
 			size_type	size() const { return (_size); }
 
-			size_type	max_size() const { return (alloc.max_size()); }
+			size_type	max_size() const { return (allocNode.max_size()); }
 
 			/*	Modifiers	*/
 
@@ -177,7 +177,7 @@ namespace	ft
 
 				// normal BST insertion
 
-				node = new Node;
+				node = allocNode.allocate(1);
 				node->parent = nullptr;
 				node->data = this->alloc.allocate(1);
 				alloc.construct(node->data, val);
@@ -293,7 +293,7 @@ namespace	ft
 				}
 				alloc.destroy(z->data);
 				alloc.deallocate(z->data, 1);
-				delete z;
+				allocNode.deallocate(z, 1);
 				if (y_original_color == 0)
 					deleteFix(x);
 				_size--;

@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/23 14:23:23 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/27 17:34:03 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 
 # include <memory>
 # include <stdexcept>
-# include <iterator>
-# include <iostream>
 
-# include "../vector/random_access_iterator.hpp"
+# include "../srcs/random_access_iterator.hpp"
 # include "../srcs/type_traits.hpp"
 # include "../srcs/reverse_iterator.hpp"
 # include "../srcs/iterator.hpp"

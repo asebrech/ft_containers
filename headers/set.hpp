@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/26 17:29:37 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/27 15:13:39 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ namespace	ft
 			typedef typename allocator_type::const_reference	const_reference;
 			typedef typename allocator_type::pointer	pointer;
 			typedef typename allocator_type::const_pointer	const_pointer;
-			typedef ft::bidirectional_iterator<value_type>	iterator;
+			typedef ft::bidirectional_iterator<const value_type>	iterator;
 			typedef ft::bidirectional_iterator<const value_type>	const_iterator;
 			typedef ft::reverse_iterator<iterator>	reverse_iterator;
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
@@ -142,11 +142,13 @@ namespace	ft
 
 			/*	Iterartors	*/			
 
-			iterator	begin() { return (iterator(minimum(root), maximum(root), TNULL)); }
+			iterator	begin()
+				{ return (iterator(reinterpret_cast<const_Node>(minimum(root)), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL))); }
 			const_iterator	begin() const
 				{ return (const_iterator(reinterpret_cast<const_Node>(minimum(root)), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL))); }
 
-			iterator	end() { return (iterator(TNULL, maximum(root), TNULL)); }
+			iterator	end()
+				{ return (iterator(reinterpret_cast<const_Node>(TNULL), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL))); }
 			const_iterator	end() const
 				{ return (const_iterator(reinterpret_cast<const_Node>(TNULL), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL))); }
 
@@ -171,7 +173,7 @@ namespace	ft
 			{
 				NodePtr	node;
 				if ((node = searchTree(root, val)) != TNULL)
-					return (ft::pair<iterator, bool>(iterator(node, maximum(root), TNULL), false));
+					return (ft::pair<iterator, bool>(iterator(reinterpret_cast<const_Node>(node), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL)), false));
 
 				// normal BST insertion
 
@@ -207,14 +209,14 @@ namespace	ft
 				if (node->parent == nullptr)
 				{
 					node->color = 0;
-					return (ft::pair<iterator, bool>(iterator(node, maximum(root), TNULL), true));
+					return (ft::pair<iterator, bool>(iterator(reinterpret_cast<const_Node>(node), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL)), true));
 				}
 
 				if (node->parent->parent == nullptr)
-					return (ft::pair<iterator, bool>(iterator(node, maximum(root), TNULL), true));
+					return (ft::pair<iterator, bool>(iterator(reinterpret_cast<const_Node>(node), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL)), true));
 
 				insertFix(node);
-				return (ft::pair<iterator, bool>(iterator(searchTree(root, val), maximum(root), TNULL), true));
+				return (ft::pair<iterator, bool>(iterator(reinterpret_cast<const_Node>(searchTree(root, val)), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL)), true));
 			}
 
 			//with hint
@@ -329,7 +331,7 @@ namespace	ft
 
 			/*	Operations	*/
 
-			iterator	find(const key_type & k) { return (iterator(searchTree(root, k), maximum(root), TNULL));}
+			iterator	find(const key_type & k) { return (iterator(reinterpret_cast<const_Node>(searchTree(root, k)), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL)));}
 			const_iterator	find(const key_type & k) const
 				{ return (const_iterator(reinterpret_cast<const_Node>(searchTree(root, k)), reinterpret_cast<const_Node>(maximum(root)), reinterpret_cast<const_Node>(TNULL))); }
 

@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 15:18:38 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/27 12:00:56 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:51:11 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 # include "vector.hpp"
 # include "../srcs/algorithm.hpp"
+
+/*
+* The std::stack class is a container adaptor that gives the programmer the functionality of a stack
+* specifically, a LIFO (last-in, first-out) data structure.*
+*/
 
 namespace ft
 {

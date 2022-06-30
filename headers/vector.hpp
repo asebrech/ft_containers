@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/27 17:34:03 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/30 15:46:20 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@
 # include "../srcs/iterator.hpp"
 # include "../srcs/algorithm.hpp"
 
+/*
+* The elements are stored contiguously, which means that elements can be accessed not only through iterators,
+* but also using offsets to regular pointers to elements.
+* This means that a pointer to an element of a vector may be passed to any function that expects a pointer to an element of an array.
+* The storage of the vector is handled automatically, being expanded and contracted as needed.
+* Vectors usually occupy more space than static arrays, because more memory is allocated to handle future growth.
+* This way a vector does not need to reallocate each time an element is inserted, but only when the additional memory is exhausted.*
+*/
 
 namespace	ft
 {
@@ -66,6 +74,13 @@ namespace	ft
 					: _data(NULL), _alloc(alloc), _capacity(0), _size(0)
 			{ assign(n, val); }
 			
+			/*
+			* SFINAE: "Substitution Failure Is Not An Error"
+			* This rule applies during overload resolution of function templates:
+			* When substituting the explicitly specified or deduced type for the template parameter fails,
+			* the specialization is discarded from the overload set instead of causing a compile error. 
+			*/
+
 			// range
 			template <class	InputIterator > 
 			vector(InputIterator first, InputIterator last, const allocator_type & alloc = allocator_type(),

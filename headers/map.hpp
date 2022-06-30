@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/27 17:34:52 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/06/30 16:34:47 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <functional>
 #include <memory>
 
+#include "../srcs/node.hpp"
 #include "../srcs/utility.hpp"
 #include "../srcs/bidirectional_iterator.hpp"
 #include "../srcs/type_traits.hpp"
@@ -23,17 +24,18 @@
 #include "../srcs/reverse_iterator.hpp"
 #include "../srcs/algorithm.hpp"
 
+/*
+* map is a sorted associative container that contains key-value pairs with unique keys.
+*/
+
 namespace	ft
 {
-	template <class T>	
-	struct Node
-	{
-		T	* data;
-		Node 	* parent;
-		Node	* left;
-		Node	* right;
-		int	color;
-	};
+	/*
+	* The properties that separate a binary search tree from a regular binary tree is
+	* All nodes of left subtree are less than the root node
+    	* All nodes of right subtree are more than the root node
+    	* Both subtrees of each node are also BSTs i.e. they have the above two properties
+	*/
 
 	/*
 	* A red-black tree T is a binary search tree having following five additional properties
@@ -103,6 +105,13 @@ namespace	ft
 				TNULL->right = nullptr;
 				root = TNULL;
 			}
+
+			/*
+			* SFINAE: "Substitution Failure Is Not An Error"
+			* This rule applies during overload resolution of function templates:
+			* When substituting the explicitly specified or deduced type for the template parameter fails,
+			* the specialization is discarded from the overload set instead of causing a compile error. 
+			*/
 
 			//range
 			template <class InputIterator>

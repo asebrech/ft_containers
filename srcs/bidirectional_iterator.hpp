@@ -6,14 +6,15 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 12:13:41 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/27 17:21:22 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/07/01 10:57:07 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BIDIRECTIONAL_ITERATOR_HPP
 # define BIDIRECTIONAL_ITERATOR_HPP
 
-# include "../srcs/iterator_traits.hpp"
+# include "iterator_traits.hpp"
+# include "node.hpp"
 
 namespace	ft
 {

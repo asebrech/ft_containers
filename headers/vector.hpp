@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/14 12:51:49 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/30 15:46:20 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/07/01 11:26:36 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,7 +263,6 @@ namespace	ft
 					}
 					for (size_type j = 0; j < n; j++)
 					{
-						_alloc.destroy(_data + i);
 						_alloc.construct(_data + i++, val);
 					}
 					_size += n;

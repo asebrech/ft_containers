@@ -14,6 +14,7 @@ int		main(void)
 	ctnr.push_back(19);
 	ctnr.push_back(0);
 	ctnr.push_back(183792);
+	ctnr.push_back(183792);
 
 	t_stack_		stck(ctnr);
 

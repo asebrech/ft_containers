@@ -6,7 +6,7 @@
 /*   By: asebrech <asebrech@student.42nice.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 12:15:50 by asebrech          #+#    #+#             */
-/*   Updated: 2022/06/30 16:34:47 by asebrech         ###   ########.fr       */
+/*   Updated: 2022/07/01 10:57:35 by asebrech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,8 +201,7 @@ namespace	ft
 				node = allocNode.allocate(1);
 				node->parent = nullptr;
 				node->data = this->alloc.allocate(1);
-				alloc.construct(&node->data->first, val.first);
-				alloc.construct(&node->data->second, val.second);
+				alloc.construct(node->data, value_type(val.first, val.second));
 				node->left = TNULL;
 				node->right = TNULL;
 				node->color = 1;
